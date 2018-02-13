@@ -8,8 +8,8 @@ export default class CacheManager {
 
     static listeners: { [uri: string]: Listener[] } = {};
 
-    static async cache(uri: string, listener: Listener): Promise<void> {
-        const {path, exists} = await getCacheEntry(uri);
+    static async cache(uri: string, listener: Listener, skipQuery: boolean): Promise<void> {
+        const {path, exists} = await getCacheEntry(uri, skipQuery);
         if (isDownloading(uri)) {
             addListener(uri, listener);
         } else if (exists) {
@@ -40,11 +40,11 @@ const addListener = (uri: string, listener: Listener) => {
 
 const isDownloading = (uri: string): boolean => CacheManager.listeners[uri] !== undefined;
 
-const getCacheEntry = async (uri): Promise<{ exists: boolean, path: string }> => {
+const getCacheEntry = async (uri, skipQuery): Promise<{ exists: boolean, path: string }> => {
     const filename = uri.substring(uri.lastIndexOf("/"), uri.indexOf("?") === -1 ? uri.length : uri.indexOf("?"));
     const ext = filename.indexOf(".") === -1 ? ".jpg" : filename.substring(filename.lastIndexOf("."));
     const uriWithoutQuery = uri.substring(0, uri.indexOf("?") === -1 ? uri.length : uri.indexOf("?"));
-    const path = FileSystem.cacheDirectory + SHA1(uriWithoutQuery) + ext;
+    const path = FileSystem.cacheDirectory + SHA1(skipQuery ? uriWithoutQuery : uri) + ext;
     const info = await FileSystem.getInfoAsync(path);
     const {exists} = info;
     return { exists, path };

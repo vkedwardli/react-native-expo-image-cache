@@ -25,7 +25,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     subscribedToCache = true;
 
     load(props: ImageProps) {
-        const {uri, style} = props;
+        const {uri, style, skipQueryForCaching} = props;
         this.style = [
             StyleSheet.absoluteFill,
             { width: "100%", height: "100%" },
@@ -36,7 +36,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
                 }
             )
         ];
-        uri && CacheManager.cache(uri, this.setURI);
+        uri && CacheManager.cache(uri, this.setURI, skipQueryForCaching);
     }
 
     componentWillMount() {
