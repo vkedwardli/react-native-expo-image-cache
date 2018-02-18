@@ -30,9 +30,8 @@ export default class Image extends React.Component<ImageProps, ImageState> {
             { width: "100%", height: "100%" },
             _.transform(
                 _.pickBy(StyleSheet.flatten(style), (value, key) => propsToCopy.indexOf(key) !== -1),
-                (result, value, key) => {
-                    Object.assign(result, {[key]: (value - (style.borderWidth || 0))});
-                }
+                // $FlowFixMe
+                (result, value, key) => Object.assign(result, { [key]: (value - (style.borderWidth || 0)) })
             )
         ];
         uri && CacheManager.cache(uri, this.setURI, skipQueryForCaching);
@@ -112,7 +111,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
                 }
                 {
                     hasPreview && Platform.OS === "android" && (
-                        <Animated.View style={[computedStyle, { backgroundColor: "black", opacity }]} />
+                        <Animated.View style={[computedStyle, { backgroundColor: black, opacity }]} />
                     )
                 }
             </View>
@@ -120,6 +119,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     }
 }
 
+const black = "black";
 const propsToCopy = [
     "borderRadius", "borderBottomLeftRadius", "borderBottomRightRadius", "borderTopLeftRadius", "borderTopRightRadius"
 ];
