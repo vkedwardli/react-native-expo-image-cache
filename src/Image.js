@@ -38,7 +38,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     }
 
     componentWillMount() {
-        const intensity = new Animated.Value(80);
+        const intensity = new Animated.Value(85);
         this.setState({ intensity });
         this.load(this.props);
     }
@@ -72,7 +72,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
         const hasDefaultSource = !!defaultSource
         const hasPreview = !!preview;
         const opacity = intensity.interpolate({
-            inputRange: [0, 80],
+            inputRange: [0, 85],
             outputRange: [0, 0.5]
         });
         return (
