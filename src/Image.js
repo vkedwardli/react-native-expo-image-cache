@@ -43,7 +43,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
             )
         ];
         if (uri) {
-            CacheManager.cache(uri, this.setURI);
+            CacheManager.cache(uri, this.setURI, skipQueryForCaching);
         }
     }
 
