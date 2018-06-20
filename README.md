@@ -22,12 +22,21 @@ yarn add react-native-expo-image-cache
 
 ## Usage
 
+### Props
+
+| Props        | Default     | Options  |
+| ------------- |:-------------:| -----:|
+| tint      | dark | light, dark, default |
+| transitionDuration     | 300      | custom in ms |
+
+
 ### <Image>
 
 ```js
 import {Image} from "react-native-expo-image-cache";
 
-const preview = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
+// preview can be a local image or a data uri
+const preview = { uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" };
 const uri = "https://firebasestorage.googleapis.com/v0/b/react-native-e.appspot.com/o/b47b03a1e22e3f1fd884b5252de1e64a06a14126.png?alt=media&token=d636c423-3d94-440f-90c1-57c4de921641";
 <Image style={{ height: 100, width: 100 }} {...{preview, uri}} />
 ```
@@ -36,9 +45,20 @@ const uri = "https://firebasestorage.googleapis.com/v0/b/react-native-e.appspot.
 
 Get the local image from a remote URI
 
-```
+```js
 import {CacheManager} from "react-native-expo-image-cache";
 
 const {uri} = this.props;
-CacheManager.cache(uri, newURI => this.setState({ uri: newURI }));
+const path = CacheManager.get(uri).getPath();
+// if path is undefined, the image download has been cancel
+CacheManager.get(uri).cancel(); // Cancel image download if one is in progress
+```
+
+You can also clear the local cache:
+
+```js
+
+import {CacheManager} from "react-native-expo-image-cache";
+
+await CacheManager.clearCache();
 ```
